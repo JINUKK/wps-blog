@@ -1,0 +1,24 @@
+<div {% if parent_id %} class="collapse card category_sub_{{parent_id}}" {% else %} class="card" {% endif %}>
+    <div class="card-header" style="padding:0; border-top:2px solid #000000; background-color:#ffffff;">
+        <h2 class="mb-0">
+            {% if parent_id %}
+            <a class="btn btn-link" href="{{category.get_absolute_url}}" style="color:#000000;">
+                {{category}}
+            </a>
+            {% else %}
+            <button class="btn btn-link" type="button" data-toggle="collapse"
+                    data-target=".category_sub_{{category.id}}" aria-expanded="false" style="font-weight:bold; color:#000000">
+                {{category}}
+            </button>
+            {% endif %}
+        </h2>
+    </div>
+</div>
+<!-- related_name을 쓰지 않았기 때문에 [default_name]_set으로 불러온다. -->
+{% if category.category_set %}
+{% with category.id as parent_id %}
+{% for category in category.category_set.all %}
+{% include 'post/part_category_list.html' %}
+{% endfor %}
+{% endwith %}
+{% endif %}
